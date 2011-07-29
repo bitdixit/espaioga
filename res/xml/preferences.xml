@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="utf-8"?>
+<PreferenceScreen
+  xmlns:android="http://schemas.android.com/apk/res/android">
+    <PreferenceCategory android:title="@string/configStartPracticeBell">
+        <ListPreference android:title="@string/configDelayToFirstBell" android:dialogTitle="Select delay" android:key="delayToFirstBell" android:entries="@array/valuesDelaySecondsText" android:entryValues="@array/valuesDelaySecondsValue" android:defaultValue="20"></ListPreference>
+    </PreferenceCategory>
+    <PreferenceCategory android:title="@string/configEndingPracticeBells">
+        <ListPreference android:key="alertBell1" android:entries="@array/valuesDelayMinutesText" android:entryValues="@array/valuesDelayMinutesValue" android:title="@string/configAlertBell1" android:defaultValue="5"></ListPreference>
+        <ListPreference android:key="alertBell2" android:entries="@array/valuesDelayMinutesText" android:entryValues="@array/valuesDelayMinutesValue" android:title="@string/configAlertBell2" android:defaultValue="10"></ListPreference>
+        <ListPreference android:key="alertBell3" android:entries="@array/valuesDelayMinutesText" android:entryValues="@array/valuesDelayMinutesValue" android:title="@string/configAlertBell3" android:defaultValue="15"></ListPreference>
+    </PreferenceCategory>
+</PreferenceScreen>

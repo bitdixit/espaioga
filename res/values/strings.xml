@@ -1,0 +1,103 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">YogaWakeUp</string>
+    <string name="configDelayToFirstBell">First bell delay</string>
+    <string name="configAlertBell1">First alert bell</string>
+    <string name="configAlertBell2">Second alert bell</string>
+    <string name="configAlertBell3">Third alert bell</string>
+
+    <string name="configGeneral">General</string>
+    <string name="configStartPracticeBell">Start practice bell</string>
+    <string name="configEndingPracticeBells">Ending practice bells</string>
+        
+    <string-array name="valuesDelaySecondsText">
+    	<item>No bell</item>
+    	<item>10 sec</item>
+    	<item>20 sec</item>
+    	<item>30 sec</item>
+    	<item>60 sec</item>
+    </string-array>
+        
+    <string-array name="valuesDelaySecondsValue">
+    	<item>0</item>
+    	<item>10</item>
+    	<item>20</item>
+    	<item>30</item>
+    	<item>60</item>
+    </string-array>    
+
+    <string-array name="valuesDelayMinutesText">
+    	<item>No bell</item>
+    	<item>1 min</item>
+    	<item>2 min</item>
+    	<item>3 min</item>
+    	<item>4 min</item>
+    	<item>5 min</item>
+    	<item>6 min</item>
+    	<item>7 min</item>
+    	<item>8 min</item>
+    	<item>9 min</item>
+    	<item>10 min</item>
+    	<item>11 min</item>
+    	<item>12 min</item>
+    	<item>13 min</item>
+    	<item>14 min</item>
+    	<item>15 min</item>
+    	<item>16 min</item>
+    	<item>17 min</item>
+    	<item>18 min</item>
+    	<item>19 min</item>
+    	<item>20 min</item>
+    </string-array>    
+
+    <string-array name="valuesDelayMinutesValue">
+    	<item>0</item>
+    	<item>1</item>
+    	<item>2</item>
+    	<item>3</item>
+    	<item>4</item>
+    	<item>5</item>
+    	<item>6</item>
+    	<item>7</item>
+    	<item>8</item>
+    	<item>9</item>
+    	<item>10</item>
+    	<item>11</item>
+    	<item>12</item>
+    	<item>13</item>
+    	<item>14</item>
+    	<item>15</item>
+    	<item>16</item>
+    	<item>17</item>
+    	<item>18</item>
+    	<item>19</item>
+    	<item>20</item>
+    </string-array>    
+
+    <string-array name="valuesPracticeTimeText">
+    	<item>15 min</item>
+    	<item>20 min</item>
+    	<item>25 min</item>
+    	<item>30 min</item>
+    	<item>35 min</item>
+    	<item>40 min</item>
+    	<item>45 min</item>
+    	<item>50 min</item>
+    	<item>55 min</item>
+    	<item>60 min</item>
+    </string-array>    
+
+    <string-array name="valuesPracticeTimeValue">
+    	<item>15</item>
+    	<item>20</item>
+    	<item>25</item>
+    	<item>30</item>
+    	<item>35</item>
+    	<item>40</item>
+    	<item>45</item>
+    	<item>50</item>
+    	<item>55</item>
+    	<item>60</item>
+    </string-array>    
+
+</resources>
