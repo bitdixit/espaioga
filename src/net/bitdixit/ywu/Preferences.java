@@ -27,4 +27,9 @@ public class Preferences
 	{
 		return Integer.parseInt(preferences.getString("alertBell3", ""+(10*60)));
 	}
+	public boolean getSetAirplaneMode()
+	{
+		return preferences.getBoolean("airplaneMode", false);
+		
+	}
 }

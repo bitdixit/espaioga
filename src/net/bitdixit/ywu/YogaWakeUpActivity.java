@@ -6,6 +6,7 @@ import android.app.Activity;
 import android.content.Intent;
 import android.media.MediaPlayer;
 import android.os.Bundle;
+import android.provider.Settings;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
@@ -14,6 +15,8 @@ import android.view.View.OnClickListener;
 import android.view.View.OnLongClickListener;
 import android.view.Window;
 import android.view.WindowManager;
+import android.view.animation.Animation;
+import android.view.animation.AnimationUtils;
 import android.widget.ImageView;
 import android.widget.Toast;
 
@@ -23,11 +26,10 @@ public class YogaWakeUpActivity
 	Preferences preferences;
 	
 	private long mPracticeTime = 0L;
-	public boolean firstTime;
 	private YogaWakeUpActivity thisActivity;
 	
 	public TimerTask timerTask = new TimerTask()
-	{ public int onTimer() { return clickTimer(); } };	
+	{ public int onTimer(int count) { return clickTimer(count); } };	
 	
 	public String getRemaining()
 	{
@@ -40,6 +42,7 @@ public class YogaWakeUpActivity
 		s+=""+until.getMinutes();
 		return s;
 	}
+	@Override
     public void onCreate(Bundle savedInstanceState)
     {
         super.onCreate(savedInstanceState);
@@ -53,15 +56,33 @@ public class YogaWakeUpActivity
         thisActivity= this;        
            
         ImageView img = (ImageView) findViewById(R.id.imageBuda);
-        
+        Animation myFadeInAnimation = AnimationUtils.loadAnimation(this, R.anim.fadein);
+        img.startAnimation(myFadeInAnimation);
+              
+           
         img.setOnLongClickListener(new OnLongClickListener() {			
 			public boolean onLongClick(View v) {
 				onLongClickImage(); return true; } });
         
         img.setOnClickListener(new OnClickListener()
-        { public void onClick(View v) { onClickImage(); } });    
+        { public void onClick(View v) { onClickImage(); } }); 
+       	
+        setAirPlaneMode(true);
     }
-    
+	@Override
+    protected void onPause()
+	{
+		super.onPause();
+    	timerTask.stop();
+	};
+	
+	@Override 
+	protected void onResume()
+	{
+		super.onResume();
+		setAirPlaneMode(true);
+		stopTimer();
+	};
     private void onClickImage()
     {
         if (mPracticeTime==0L)
@@ -78,34 +99,45 @@ public class YogaWakeUpActivity
     }
     private void onLongClickImage()
     {
-        Toast.makeText(thisActivity, "Practice ends", Toast.LENGTH_SHORT).show();
-		stopTimer();
+    	if (mPracticeTime>0)
+    	{
+    		Toast.makeText(thisActivity, "practice ends", Toast.LENGTH_SHORT).show();
+    		stopTimer();
+    	}
     	
     }
     private void startTimer()
     {
-    	ImageView iv = (ImageView)findViewById(R.id.imageBuda);
-    	iv.setImageResource(R.drawable.budahi);       
+    	setImage(true);
         timerTask.start(preferences.delayToFirstBell()*1000);
-        firstTime=true;
     }
     
-    private int clickTimer()
+    private int clickTimer(int count)
     {
-    	if (firstTime) { playBell(); firstTime = false; }
+    	if (count==0) playBell(); 
     	
     	mPracticeTime--;
     	
-    	if (mPracticeTime==preferences.alertBell1() ||
-    		mPracticeTime==preferences.alertBell2() ||
-    		mPracticeTime==preferences.alertBell3())
+    	if (mPracticeTime==preferences.alertBell1()*60 ||
+    		mPracticeTime==preferences.alertBell2()*60 ||
+    		mPracticeTime==preferences.alertBell3()*60)
     	{
     		playBell();    	
     	}
 
     	if (mPracticeTime==0)
     	{
-    		stopTimer();
+    		new TimerTask() {				
+				public int onTimer(int count)
+				{
+					finish();
+					return 0;
+				}
+			}.start(4000);
+            Toast.makeText(thisActivity, "you are wellcome", Toast.LENGTH_SHORT).show();
+            ImageView img = (ImageView) findViewById(R.id.imageBuda);
+            Animation myFadeInAnimation = AnimationUtils.loadAnimation(this, R.anim.fadeout);
+            img.startAnimation(myFadeInAnimation);
     		return 0;
     	}
     	
@@ -113,8 +145,7 @@ public class YogaWakeUpActivity
     }
     private void stopTimer()
     {
-    	ImageView iv = (ImageView)findViewById(R.id.imageBuda);
-    	iv.setImageResource(R.drawable.budalo);       
+    	setImage(false);
     	timerTask.stop();
         mPracticeTime=0L;
     }
@@ -129,15 +160,42 @@ public class YogaWakeUpActivity
         inflater.inflate(R.menu.main, menu);
         return true;
     }
-        
+    public void setImage(boolean active)
+    {
+    	ImageView iv = (ImageView)findViewById(R.id.imageBuda);
+    	iv.setImageResource(active?R.drawable.budahi:R.drawable.budalo);       
+    }
+    
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
-            case R.id.menuConfigure: startActivity(new Intent(this, PreferencesActivity.class));
-                                     break;
-            case R.id.menuInfo: startActivity(new Intent(this, InformationActivity.class));
-            break;
+            case R.id.menuConfigure:
+            	startActivity(new Intent(this, PreferencesActivity.class));
+                break;
+            case R.id.menuInfo:
+            	startActivity(new Intent(this, InformationActivity.class));
+                break;
+            case R.id.menuLibrary:
+            	startActivity(new Intent(this, AsanaListActivity.class));
+                break;
                                      
         }
         return true;
     }
+    
+    public void setAirPlaneMode(boolean isEnabled)
+    {
+    	if (preferences.getSetAirplaneMode())
+    	{
+	    	// toggle airplane mode
+	    	Settings.System.putInt(
+	    		 this.getApplicationContext().getContentResolver(),
+	    	      Settings.System.AIRPLANE_MODE_ON, isEnabled ? 1 : 0);
+	
+	    	// Post an intent to reload
+	    	Intent intent = new Intent(Intent.ACTION_AIRPLANE_MODE_CHANGED);
+	    	intent.putExtra("state", !isEnabled);
+	    	sendBroadcast(intent);    	
+    	}
+    }
+
 }
